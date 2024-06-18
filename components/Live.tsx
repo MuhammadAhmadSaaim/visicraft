@@ -6,9 +6,12 @@ import { CursorMode, CursorState, Reaction, ReactionEvent } from "@/types/type";
 import ReactionSelector from "./reaction/ReactionButton";
 import FlyingReaction from "./reaction/FlyingButton";
 import useInterval from "@/hooks/useInterval";
-import { X } from "lucide-react";
 
-const Live = () => {
+type Props = {
+    canvasRef: React.MutableRefObject<HTMLCanvasElement | null>
+}
+
+const Live = ({ canvasRef }: Props) => {
     const others = useOthers();
     const [{ cursor }, updateMyPresence] = useMyPresence() as any;
 
@@ -143,13 +146,15 @@ const Live = () => {
     }, [updateMyPresence])
 
     return (
-        <div onPointerMove={handlePointerMove}
+        <div
+            id="canvas"
+            onPointerMove={handlePointerMove}
             onPointerDown={handlePointerDown}
             onPointerLeave={handlePointerLeave}
             onPointerUp={handlePointerUp}
             className="h-[100vh] w-full flex justify-center items-center text-center">
 
-            <h1 className="text-3xl text-white">VisiCraft</h1>
+            <canvas ref={canvasRef} />
 
             {reactions.map((r) => {
                 return (
